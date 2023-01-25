@@ -5,6 +5,10 @@ const catSchema = new mongoose.Schema({
     breed: String,
 });
 
+catSchema.methods.sayHello = function () {
+    console.log(`Hello, my name is ${this.name} and mew!`);
+};
+
 const Cat = mongoose.model('Cat', catSchema);
 
 async function main() {
@@ -13,13 +17,19 @@ async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/catShelter')
     console.log(`DataBase Connected`);
 
-    await saveCat('Mishi', 3, 'pgushko');
-    await readCats();
+    const cats = await readCats();
+    cats.forEach(cat => {
+        cat.sayHello();
+    });
+
+    //await saveCat('Mishi', 3, 'pgushko');
+    //await readCats();
 
 }
 async function readCats() {
     const cats = await Cat.find();
     console.log(cats);
+    return cats;
 }
 
 async function saveCat(name, age, breed) {
@@ -29,7 +39,7 @@ async function saveCat(name, age, breed) {
         age,
         breed,
     });
-
+    //втори вариянт
     // const cat = new Cat({//инстанция на модела 
     //     name,
     //     age,

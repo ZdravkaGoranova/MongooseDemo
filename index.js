@@ -4,10 +4,17 @@ const catSchema = new mongoose.Schema({
     age: Number,
     breed: String,
 });
-
+//Method
 catSchema.methods.sayHello = function () {
     console.log(`Hello, my name is ${this.name} and mew!`);
 };
+
+//Virtual property
+catSchema.virtual('info').get(function () {
+    return `${this.name} - age ${this.age}  - breed ${this.breed}`;
+});
+
+
 
 const Cat = mongoose.model('Cat', catSchema);
 
@@ -20,6 +27,10 @@ async function main() {
     const cats = await readCats();
     cats.forEach(cat => {
         cat.sayHello();
+        console.log(cat.info);
+
+        // cat.info; към Virtual property
+        //e property и не се извиква като метод ()
     });
 
     //await saveCat('Mishi', 3, 'pgushko');

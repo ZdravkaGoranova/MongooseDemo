@@ -1,7 +1,18 @@
 const mongoose = require('mongoose');
 const catSchema = new mongoose.Schema({
-    name: String,
-    age: Number,
+    name: {
+        type: String,
+        required: [true, 'Nedd from NAME!'],//Може да си опишем съобщението за грешката
+        minLength: 4,
+        maxLength: 6,
+        lowercase: false,
+        uppercase: true
+    },
+    age: {
+        type: Number,
+        min: 1,
+        max: 9,
+    },
     breed: String,
 });
 //Method
@@ -14,6 +25,10 @@ catSchema.virtual('info').get(function () {
     return `${this.name} - age ${this.age}  - breed ${this.breed}`;
 });
 
+//Validation methods or Customs validation
+catSchema.path('name').validate(function () {
+    return this.name.startsWith('N');
+}, 'Name should start with N')
 
 
 const Cat = mongoose.model('Cat', catSchema);
@@ -33,8 +48,9 @@ async function main() {
         //e property и не се извиква като метод ()
     });
 
+    await saveCat("Kiki", 6, 'pgushko');//валидация на name
     //await saveCat('Mishi', 3, 'pgushko');
-    //await readCats();
+    await readCats();
 
 }
 async function readCats() {
@@ -57,6 +73,8 @@ async function saveCat(name, age, breed) {
     //     breed,
     // })
     // await cat.save();//запазва в базата данни
+
+    return Cat;
 }
 
 main();

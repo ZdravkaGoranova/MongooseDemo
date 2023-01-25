@@ -14,7 +14,10 @@ const catSchema = new mongoose.Schema({
         min: 1,
         max: 9,
     },
-    breed: String,
+    breed: {
+        type:String,
+        enum:['Persian','Domestic','puhi'],
+    },
 });
 //Method
 catSchema.methods.sayHello = function () {

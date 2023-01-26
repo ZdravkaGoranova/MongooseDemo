@@ -6,8 +6,8 @@ const catSchema = new mongoose.Schema({
         required: [true, 'Nedd from NAME!'],//Може да си опишем съобщението за грешката
         minLength: 4,
         maxLength: 6,
-        lowercase: false,
-        uppercase: true
+        // lowercase: false,
+        // uppercase: true
     },
     age: {
         type: Number,
